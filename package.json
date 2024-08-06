@@ -1,6 +1,6 @@
 {
   "name": "uf-test",
-  "version": "2.12.2",
+  "version": "2.12.3",
   "description": " test Async loader for userflow.js",
   "homepage": "https://github.com/vigbeamer/uf-test",
   "repository": {
