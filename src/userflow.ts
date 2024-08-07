@@ -9,6 +9,7 @@ interface WindowWithUserflow extends Window {
   USERFLOWJS_QUEUE?: [string, Deferred | null, any[]][]
 
   USERFLOWJS_ENV_VARS?: Record<string, any>
+  __userflowStatePatched: Boolean
 }
 
 // userflow.js API
@@ -206,6 +207,38 @@ interface Deferred {
 // empty object instead of `window`.
 var w: WindowWithUserflow = typeof window === 'undefined' ? ({} as any) : window
 var userflow = w.userflow
+var history = w.history
+
+function overrideHistoryMethods(method: () => void, eventName: string) {
+  return function () {
+    var event = new CustomEvent(eventName)
+    var args = Array.prototype.slice.call(arguments)
+    var ret = method.apply(history, args as any)
+    w.dispatchEvent(event)
+    return ret
+  }
+}
+
+// patch the history API's
+// pushState method to emit userflow:pushstate and
+// replaceState method to emit userflow:replacestate
+if (history) {
+  // indicates if the history API's pushState and replaceState are patched with custom event emitters
+  w.__userflowStatePatched = true
+
+  var originalPushState = history.pushState
+  var originalReplaceState = history.replaceState
+
+  history.pushState = overrideHistoryMethods(
+    originalPushState as any,
+    'userflow:pushstate'
+  )
+  history.replaceState = overrideHistoryMethods(
+    originalReplaceState as any,
+    'userflow:replacestate'
+  )
+}
+
 if (!userflow) {
   //
   var urlPrefix = 'https://js.userflow.com/'

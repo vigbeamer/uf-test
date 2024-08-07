@@ -1,13 +1,14 @@
 {
-  "name": "uf-test",
-  "version": "2.12.3",
-  "description": " test Async loader for userflow.js",
+  "name": "userflow.js",
+  "version": "2.12.4",
+  "description": "Async loader for userflow.js",
   "homepage": "https://github.com/vigbeamer/uf-test",
   "repository": {
     "type": "git",
     "url": "git@github.com:vigbeamer/uf-test.git"
   },
-  "author": "vig",
+  "bugs": "https://github.com/vigbeamer/uf-test/issues",
+  "author": "vignesh",
   "license": "MIT",
   "private": false,
   "main": "dist/userflow.umd.js",
